@@ -2,7 +2,11 @@
   "name": "teknasyon/suite",
   "type": "library",
   "description": "SDK for Suite",
-  "keywords": ["suite","sdk"],
+  "keywords": [
+    "suite",
+    "sdk",
+    "laravel"
+  ],
   "homepage": "https://github.com/amir-shadanfar/suite-sdk",
   "license": "MIT",
   "authors": [
@@ -13,20 +17,30 @@
     }
   ],
   "require": {
-    "php": ">=7.4"
+    "illuminate/support": "~7|~8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~9.0",
+    "orchestra/testbench": "~5|~6"
   },
   "autoload": {
     "psr-4": {
-      "Suite": "src"
+      "Teknasyon\\Suite\\": "src"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Teknasyon\\Suite\\Tests\\": "tests"
+      }
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Teknasyon\\SuiteServiceProvider"
-      ]
+        "Teknasyon\\Suite\\SuiteServiceProvider"
+      ],
+      "aliases": {
+        "Suite": "Teknasyon\\Suite\\Facade\\SuiteFacade"
+      }
     }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }
