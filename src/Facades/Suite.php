@@ -1,6 +1,6 @@
 <?php
 
-namespace Teknasyon\Suite\Facades;
+namespace Rockads\Suite\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

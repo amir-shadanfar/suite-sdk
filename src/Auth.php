@@ -1,8 +1,8 @@
 <?php
 
-namespace Teknasyon\Suite;
+namespace Rockads\Suite;
 
-use Teknasyon\Suite\GrantTypes\GrantTypeFactory;
+use Rockads\Suite\GrantTypes\GrantTypeFactory;
 
 class Auth
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Teknasyon\Suite\GrantTypes;
+namespace Rockads\Suite\GrantTypes;
 
 
 abstract class AbstractGrantType implements GrantTypeInterface

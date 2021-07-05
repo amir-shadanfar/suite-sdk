@@ -1,6 +1,6 @@
 <?php
 
-namespace Teknasyon\Suite\Models;
+namespace Rockads\Suite\Models;
 
 class ModulesType
 {

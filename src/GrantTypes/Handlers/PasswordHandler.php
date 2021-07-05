@@ -1,10 +1,10 @@
 <?php
 
-namespace Teknasyon\Suite\GrantTypes\Handlers;
+namespace Rockads\Suite\GrantTypes\Handlers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Teknasyon\Suite\GrantTypes\AbstractGrantType;
+use Rockads\Suite\GrantTypes\AbstractGrantType;
 
 class PasswordHandler extends AbstractGrantType
 {

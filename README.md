@@ -12,7 +12,7 @@ This is where your description should go. Take a look at [contributing.md](contr
 Via Composer
 
 ``` bash
-$ composer require teknasyon/suite
+$ composer require rockads/suite
 ```
 
 ## Usage
@@ -44,14 +44,14 @@ If you discover any security related issues, please email amirshadanfar@teknasyo
 
 MIT. Please see the [license file](license.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/teknasyon/suite.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/teknasyon/suite.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/teknasyon/suite/master.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/rockads/suite.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/rockads/suite.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/rockads/suite/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/12345678/shield
 
-[link-packagist]: https://packagist.org/packages/teknasyon/suite
-[link-downloads]: https://packagist.org/packages/teknasyon/suite
-[link-travis]: https://travis-ci.org/teknasyon/suite
+[link-packagist]: https://packagist.org/packages/rockads/suite
+[link-downloads]: https://packagist.org/packages/rockads/suite
+[link-travis]: https://travis-ci.org/rockads/suite
 [link-styleci]: https://styleci.io/repos/12345678
-[link-author]: https://github.com/teknasyon
+[link-author]: https://github.com/rockads
 [link-contributors]: ../../contributors

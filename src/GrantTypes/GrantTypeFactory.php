@@ -1,8 +1,8 @@
 <?php
 
-namespace Teknasyon\Suite\GrantTypes;
+namespace Rockads\Suite\GrantTypes;
 
-use Teknasyon\Suite\Models\AuthTypes;
+use Rockads\Suite\Models\AuthTypes;
 
 class GrantTypeFactory
 {
