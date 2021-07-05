@@ -1,23 +1,27 @@
 {
   "name": "teknasyon/suite",
-  "type": "library",
-  "description": "SDK for Suite",
-  "keywords": [
-    "suite",
-    "sdk",
-    "laravel"
-  ],
-  "homepage": "https://github.com/amir-shadanfar/suite-sdk",
+  "description": ":SDK for suite platform",
   "license": "MIT",
   "authors": [
     {
-      "name": "Amir Shadanfar",
-      "email": "amirshadanfar@teknasyon.com",
-      "role": "Developer"
+      "name": "Amir",
+      "email": "amirshadanfar@teknasyon.com"
+    }
+  ],
+  "homepage": "https://github.com/teknasyon/suite",
+  "keywords": [
+    "Laravel",
+    "Suite"
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/amir-shadanfar/suite-sdk"
     }
   ],
   "require": {
-    "illuminate/support": "~7|~8"
+    "illuminate/support": "~7|~8",
+    "illuminate/http": "8.*"
   },
   "require-dev": {
     "phpunit/phpunit": "~9.0",
@@ -25,12 +29,15 @@
   },
   "autoload": {
     "psr-4": {
-      "Teknasyon\\Suite\\": "src"
+      "Teknasyon\\Suite\\": "src/"
     },
-    "autoload-dev": {
-      "psr-4": {
-        "Teknasyon\\Suite\\Tests\\": "tests"
-      }
+    "files": [
+      "/src/Helpers/General.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Teknasyon\\Suite\\Tests\\": "tests"
     }
   },
   "extra": {
@@ -39,7 +46,7 @@
         "Teknasyon\\Suite\\SuiteServiceProvider"
       ],
       "aliases": {
-        "Suite": "Teknasyon\\Suite\\Facade\\SuiteFacade"
+        "Suite": "Teknasyon\\Suite\\Facades\\Suite"
       }
     }
   }
