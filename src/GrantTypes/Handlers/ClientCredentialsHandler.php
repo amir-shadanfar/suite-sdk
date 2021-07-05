@@ -1,10 +1,10 @@
 <?php
 
-namespace Rockads\Suite\GrantTypes\Handlers;
+namespace Suite\Suite\GrantTypes\Handlers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Rockads\Suite\GrantTypes\AbstractGrantType;
+use Suite\Suite\GrantTypes\AbstractGrantType;
 
 class ClientCredentialsHandler extends AbstractGrantType
 {

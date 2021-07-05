@@ -1,11 +1,11 @@
 <?php
 
-namespace Rockads\Suite\Modules;
+namespace Suite\Suite\Modules;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Rockads\Suite\Auth;
-use Rockads\Suite\Suite;
+use Suite\Suite\Auth;
+use Suite\Suite\Suite;
 
 class CustomerModule extends Suite
 {
@@ -17,7 +17,7 @@ class CustomerModule extends Suite
     /**
      * Customer constructor.
      *
-     * @param \Rockads\Suite\Auth $auth
+     * @param \Suite\Suite\Auth $auth
      */
     public function __construct(Auth $auth)
     {

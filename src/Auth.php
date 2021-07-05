@@ -1,8 +1,8 @@
 <?php
 
-namespace Rockads\Suite;
+namespace Suite\Suite;
 
-use Rockads\Suite\GrantTypes\GrantTypeFactory;
+use Suite\Suite\GrantTypes\GrantTypeFactory;
 
 class Auth
 {

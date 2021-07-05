@@ -1,6 +1,6 @@
 <?php
 
-namespace Rockads\Suite;
+namespace Suite\Suite;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -9,7 +9,7 @@ class SuiteServiceProvider extends ServiceProvider
     // Http events &listeners
     protected $listen = [
         'Illuminate\Http\Client\Events\RequestSending' => [
-            'Rockads\Suite\Listeners\LogRequestSending',
+            'Suite\Suite\Listeners\LogRequestSending',
         ],
     ];
 

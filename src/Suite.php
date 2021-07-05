@@ -1,17 +1,17 @@
 <?php
 
-namespace Rockads\Suite;
+namespace Suite\Suite;
 
-use Rockads\Suite\Models\ModulesType;
+use Suite\Suite\Models\ModulesType;
 
 /**
  * Class Suite
- * @package Rockads\Suite
+ * @package Suite\Suite
  */
 class Suite
 {
     /**
-     * @var \Rockads\Suite\Auth
+     * @var \Suite\Suite\Auth
      */
     protected $auth;
 
@@ -48,7 +48,7 @@ class Suite
     /**
      * Suite constructor.
      *
-     * @param \Rockads\Suite\Auth $auth
+     * @param \Suite\Suite\Auth $auth
      */
     public function __construct(Auth $auth)
     {
@@ -71,7 +71,7 @@ class Suite
             throw new \Exception('The given module name is invalid');
         }
 
-        $this->module = app()->make("\Rockads\Suite\Modules\{$moduleName}::class");
+        $this->module = app()->make("\Suite\Suite\Modules\{$moduleName}::class");
         return $this->module;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rockads\Suite\GrantTypes;
+namespace Suite\Suite\GrantTypes;
 
 interface GrantTypeInterface
 {

@@ -1,5 +1,5 @@
 {
-  "name": "rockads/suite",
+  "name": "suite/suite",
   "description": ":SDK for suite platform",
   "license": "MIT",
   "authors": [
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Rockads\\Suite\\": "src/"
+      "Suite\\Suite\\": "src/"
     },
     "files": [
       "/src/Helpers/General.php"
@@ -31,16 +31,16 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Rockads\\Suite\\Tests\\": "tests"
+      "Suite\\Suite\\Tests\\": "tests"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Rockads\\Suite\\SuiteServiceProvider"
+        "Suite\\Suite\\SuiteServiceProvider"
       ],
       "aliases": {
-        "Suite": "Rockads\\Suite\\Facades\\Suite"
+        "Suite": "Suite\\Suite\\Facades\\Suite"
       }
     }
   }

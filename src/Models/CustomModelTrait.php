@@ -1,6 +1,6 @@
 <?php
 
-namespace Rockads\Suite\Models;
+namespace Suite\Suite\Models;
 
 trait CustomModelTrait
 {

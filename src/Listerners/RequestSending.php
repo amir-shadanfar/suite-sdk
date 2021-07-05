@@ -1,6 +1,6 @@
 <?php
 
-namespace Rockads\Suite\Listeners;
+namespace Suite\Suite\Listeners;
 
 use Illuminate\Http\Client\Events\RequestSending as RequestSendingEvent;
 
