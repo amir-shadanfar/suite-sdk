@@ -3,16 +3,30 @@
 namespace Suite\Suite;
 
 use Suite\Suite\GrantTypes\GrantTypeFactory;
+use Suite\Suite\GrantTypes\GrantTypeInterface;
 
+/**
+ * Class Auth
+ * @package Suite\Suite
+ */
 class Auth
 {
-    protected $token;
-    protected $grantType;
+    /**
+     * @var array
+     */
+    protected array $token;
+
+    /**
+     * @var \Suite\Suite\GrantTypes\GrantTypeInterface
+     */
+    protected GrantTypeInterface $grantType;
 
     /**
      * Auth constructor.
+     *
      * @param string $authType
      * @param array $config
+     *
      * @throws \Exception
      */
     public function __construct(string $authType, array $config = [])
@@ -23,9 +37,37 @@ class Auth
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getToken()
     {
-        return $this->grantType->getTokens();
+        $authResponse = $this->grantType->getTokens();
+        $this->token = $authResponse['data']['token'];
+        return $this->token;
     }
+
+    /**
+     *
+     */
+    public function login()
+    {
+
+    }
+
+    /**
+     *
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     *
+     */
+    public function logout()
+    {
+
+    }
+
 }

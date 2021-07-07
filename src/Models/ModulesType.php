@@ -6,10 +6,11 @@ class ModulesType
 {
     use CustomModelTrait;
 
-    const CUSTOMER = "CustomerModule";
-    const USER = "UserModule";
-    const APPLICATION = "ApplicationModule";
-    const GROUP = "GroupModule";
-    const SERVICE_ACL = "ServiceAclModule";
-    const SERVICE = "ServiceModule";
+    const AUTH = "auth";
+    const CUSTOMER = "Customer";
+    const USER = "User";
+    const APPLICATION = "Application";
+    const GROUP = "Group";
+    const SERVICE_ACL = "ServiceAcl";
+    const SERVICE = "Service";
 }

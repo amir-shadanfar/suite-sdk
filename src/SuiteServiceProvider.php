@@ -8,9 +8,9 @@ class SuiteServiceProvider extends ServiceProvider
 {
     // Http events &listeners
     protected $listen = [
-        'Illuminate\Http\Client\Events\RequestSending' => [
-            'Suite\Suite\Listeners\LogRequestSending',
-        ],
+//        'Illuminate\Http\Client\Events\RequestSending' => [
+//            'Suite\Suite\Listeners\LogRequestSending',
+//        ],
     ];
 
     /**

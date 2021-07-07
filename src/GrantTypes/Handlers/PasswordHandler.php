@@ -4,12 +4,13 @@ namespace Suite\Suite\GrantTypes\Handlers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Suite\Suite\Exceptions\CustomException;
 use Suite\Suite\GrantTypes\AbstractGrantType;
 
 class PasswordHandler extends AbstractGrantType
 {
-    protected $config;
-    protected $url;
+    protected array $config;
+    protected string $url;
 
     /**
      * PasswordHandler constructor.
@@ -30,7 +31,8 @@ class PasswordHandler extends AbstractGrantType
     }
 
     /**
-     * @return string
+     * @return array|mixed
+     * @throws \Suite\Suite\Exceptions\CustomException
      */
     public function getTokens()
     {
@@ -42,22 +44,13 @@ class PasswordHandler extends AbstractGrantType
             "workspace" => $this->config['workspace'],
         ];
 
-        try {
-            $url = path_join($this->baseUrl, $this->url);
-
-            $response = Http::post($url, $loginParams);
-            if ($response->ok()) {
-                return $response->body();
-            } else {
-                throw new \Exception('Getting token is failed', (array)$response);
-            }
-        } catch (\Throwable $exception) {
-            Log::debug($exception->getMessage(), [
-                'url' => request()->url(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'code' => $exception->getCode(),
-            ]);
+        $url = path_join($this->baseUrl, $this->url);
+        $response = Http::post($url, $loginParams);
+        if ($response->ok()) {
+            return $response->json();
+        } else {
+            throw new CustomException($response->json()['message'], $response->json());
         }
+
     }
 }
