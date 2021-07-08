@@ -4,19 +4,24 @@ namespace Suite\Suite\Exceptions;
 
 use Exception;
 
-class CustomException extends Exception
+class SuiteException extends Exception
 {
-    private array $_data;
+    protected array $_data;
+
+    protected $code;
 
     /**
      * EuroMessageException constructor.
+     *
      * @param String $message
      * @param  $data
      */
-    public function __construct(string $message, $data)
+    public function __construct(string $message, $data, $exceptionCode)
     {
         $this->_data = $data;
         parent::__construct($message);
+        if (400 <= $exceptionCode && $exceptionCode <= 600)
+            $this->code = $exceptionCode;
     }
 
     public function getData(): array

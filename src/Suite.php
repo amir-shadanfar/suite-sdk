@@ -2,7 +2,8 @@
 
 namespace Suite\Suite;
 
-use Suite\Suite\Models\ModulesType;
+use Suite\Suite\Constants\ModulesType;
+use Suite\Suite\Models\Token;
 
 /**
  * Class Suite
@@ -14,21 +15,6 @@ class Suite
      * @var \Suite\Suite\Auth
      */
     protected $auth;
-
-    /**
-     * @var
-     */
-    protected $accessToken;
-
-    /**
-     * @var
-     */
-    protected $refreshToken;
-
-    /**
-     * @var
-     */
-    protected $expiresIn;
 
     /**
      * @var string
@@ -48,13 +34,13 @@ class Suite
     /**
      * Suite constructor.
      *
-     * @param \Suite\Suite\Auth|null $auth
+     * @param \Suite\Suite\GrantTypes\Auth|null $auth
      *
      * @throws \Exception
      */
     public function __construct(Auth $auth = null)
     {
-        $this->baseUrl = config('suite.auth.base_url');
+        $this->baseUrl = config('suite.base_url');
         $this->apiVersion = config('suite.api_version');
         $this->auth = $auth;
         if (!is_null($auth)) {
@@ -68,14 +54,9 @@ class Suite
      * @return mixed
      * @throws \Exception
      */
-    public function getToken()
+    public function getToken(): Token
     {
-        $tokens = $this->auth->getToken();
-        // fill data
-        $this->accessToken = $tokens['access_token'];
-        $this->refreshToken = $tokens['refresh_token'];
-        $this->expiresIn = $tokens['expires_in'];
-        return $tokens;
+        return $this->auth->getToken();
     }
 
     /**
@@ -93,17 +74,6 @@ class Suite
         }
         $this->module = app(sprintf("\Suite\Suite\Modules\%s", $moduleName), ['auth' => $this->auth]);
         return $this->module;
-    }
-
-    /**
-     * auth
-     *
-     * @return mixed|\Suite\Suite\Suite
-     * @throws \Exception
-     */
-    public function auth()
-    {
-        return $this->setModule(ModulesType::AUTH);
     }
 
     /**

@@ -4,12 +4,26 @@ namespace Suite\Suite\GrantTypes\Handlers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Suite\Suite\Exceptions\CustomException;
+use Suite\Suite\Exceptions\SuiteException;
 use Suite\Suite\GrantTypes\AbstractGrantType;
+use Suite\Suite\GrantTypes\Auth;
+use Suite\Suite\GrantTypes\GrantTypeInterface;
+use Suite\Suite\Models\Token;
 
-class PasswordHandler extends AbstractGrantType
+/**
+ * Class PasswordGrantHandler
+ * @package Suite\Suite\GrantTypes\Handlers
+ */
+class PasswordGrantHandler extends AbstractGrantType
 {
+    /**
+     * @var array
+     */
     protected array $config;
+
+    /**
+     * @var string
+     */
     protected string $url;
 
     /**
@@ -31,10 +45,10 @@ class PasswordHandler extends AbstractGrantType
     }
 
     /**
-     * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @return array
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function getTokens()
+    public function getTokens(): Token
     {
         $loginParams = [
             "client_id" => config('suite.auth.client_id'),
@@ -47,10 +61,9 @@ class PasswordHandler extends AbstractGrantType
         $url = path_join($this->baseUrl, $this->url);
         $response = Http::post($url, $loginParams);
         if ($response->ok()) {
-            return $response->json();
+            return new Token($response->json());
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            throw new SuiteException($response->json()['message'], $response->json(), $response->status());
         }
-
     }
 }

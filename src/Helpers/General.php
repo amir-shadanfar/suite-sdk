@@ -10,3 +10,16 @@ if (!function_exists('path_join')) {
     }
 }
 
+if (!function_exists('camel_to_snake')) {
+    function camel_to_snake($input)
+    {
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
+    }
+}
+
+if (!function_exists('snakeToCamel')) {
+    function snakeToCamel($input)
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $input))));
+    }
+}

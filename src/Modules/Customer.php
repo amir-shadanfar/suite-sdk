@@ -4,7 +4,7 @@ namespace Suite\Suite\Modules;
 
 use Illuminate\Support\Facades\Http;
 use Suite\Suite\Auth;
-use Suite\Suite\Exceptions\CustomException;
+use Suite\Suite\Exceptions\SuiteException;
 use Suite\Suite\Suite;
 
 class Customer extends Suite
@@ -29,20 +29,21 @@ class Customer extends Suite
 
     /**
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function all()
     {
         $url = path_join($this->baseUrl, $this->url);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->get($url);
 
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling all in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 
@@ -52,14 +53,14 @@ class Customer extends Suite
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function create(string $name, string $workspace, array $services)
     {
         $url = path_join($this->baseUrl, $this->url);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->post($url, [
                 'name' => $name,
                 'workspace' => $workspace,
@@ -69,7 +70,8 @@ class Customer extends Suite
         if ($response->status() == 201) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling create in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 
@@ -77,7 +79,7 @@ class Customer extends Suite
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
     {
@@ -85,13 +87,14 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->get($url);
 
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling show in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 
@@ -102,7 +105,7 @@ class Customer extends Suite
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function update(int $id, string $name, string $workspace, array $services)
     {
@@ -110,7 +113,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->put($url, [
                 'name' => $name,
                 'workspace' => $workspace,
@@ -120,7 +123,8 @@ class Customer extends Suite
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling update in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 
@@ -128,7 +132,7 @@ class Customer extends Suite
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function delete(int $id)
     {
@@ -136,13 +140,14 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->delete($url);
 
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling delete in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 
@@ -151,7 +156,7 @@ class Customer extends Suite
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\CustomException
+     * @throws \Suite\Suite\Exceptions\SuiteException
      */
     public function syncServices(int $id, array $services)
     {
@@ -159,13 +164,14 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->accessToken)
+            ->withToken($this->auth->getToken()->getAccessToken())
             ->put($url, ['services' => $services]);
 
         if ($response->ok()) {
             return $response->json();
         } else {
-            throw new CustomException($response->json()['message'], $response->json());
+            $message = is_array($response->json()['message']) ? "Error in calling syncing service in customer" : $response->json()['message'];
+            throw new SuiteException($message, $response->json(), $response->status());
         }
     }
 }

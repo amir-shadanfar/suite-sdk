@@ -1,6 +1,6 @@
 <?php
 
-namespace Suite\Suite\Models;
+namespace Suite\Suite\Constants;
 
 trait CustomModelTrait
 {

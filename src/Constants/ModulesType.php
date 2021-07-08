@@ -1,12 +1,11 @@
 <?php
 
-namespace Suite\Suite\Models;
+namespace Suite\Suite\Constants;
 
 class ModulesType
 {
     use CustomModelTrait;
 
-    const AUTH = "auth";
     const CUSTOMER = "Customer";
     const USER = "User";
     const APPLICATION = "Application";
