@@ -26,9 +26,9 @@ class Token
     protected string $refreshToken;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    protected Carbon $expiresIn;
+    protected \DateTime $expiresIn;
 
     /**
      * @var array
@@ -130,7 +130,10 @@ class Token
      */
     public function setExpiresIn(int $expiresIn): void
     {
-        $this->expiresIn = Carbon::now()->addSeconds($expiresIn);
+        $this->expiresIn = Carbon::now()
+            ->addSeconds($expiresIn)
+            // ->setTimezone()
+            ->toDateTime();
     }
 
 

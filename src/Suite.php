@@ -4,6 +4,7 @@ namespace Suite\Suite;
 
 use Suite\Suite\Constants\ModulesType;
 use Suite\Suite\Models\Token;
+use Suite\Suite\Modules\AbstractModule;
 
 /**
  * Class Suite
@@ -12,9 +13,9 @@ use Suite\Suite\Models\Token;
 class Suite
 {
     /**
-     * @var \Suite\Suite\Auth
+     * @var \Suite\Suite\Models\Token
      */
-    protected $auth;
+    protected Token $token;
 
     /**
      * @var string
@@ -27,36 +28,22 @@ class Suite
     protected $apiVersion;
 
     /**
-     * @var
+     * @var \Suite\Suite\Modules\AbstractModule
      */
-    protected Suite $module;
+    protected AbstractModule $module;
 
     /**
      * Suite constructor.
      *
-     * @param \Suite\Suite\GrantTypes\Auth|null $auth
+     * @param \Suite\Suite\Models\Token $token
      *
      * @throws \Exception
      */
-    public function __construct(Auth $auth = null)
+    public function __construct(Token $token)
     {
         $this->baseUrl = config('suite.base_url');
         $this->apiVersion = config('suite.api_version');
-        $this->auth = $auth;
-        if (!is_null($auth)) {
-            $this->getToken();
-        }
-    }
-
-    /**
-     * getToken
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public function getToken(): Token
-    {
-        return $this->auth->getToken();
+        $this->token = $token;
     }
 
     /**
@@ -72,7 +59,7 @@ class Suite
         if (!in_array($moduleName, ModulesType::toArray())) {
             throw new \Exception('The given module name is invalid');
         }
-        $this->module = app(sprintf("\Suite\Suite\Modules\%s", $moduleName), ['auth' => $this->auth]);
+        $this->module = app(sprintf("\Suite\Suite\Modules\%s", $moduleName), ['token' => $this->token]);
         return $this->module;
     }
 
