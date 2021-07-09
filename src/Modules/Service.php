@@ -6,16 +6,15 @@ use Suite\Suite\Constants\ModulesType;
 use Suite\Suite\Models\Token;
 
 /**
- * Class Customer
+ * Class Service
  * @package Suite\Suite\Modules
  */
-class Customer extends AbstractModule
+class Service extends AbstractModule
 {
-
     /**
      * @var string
      */
-    protected string $moduleName = ModulesType::CUSTOMER;
+    protected string $moduleName = ModulesType::SERVICE;
 
     /**
      * @var string
@@ -23,14 +22,14 @@ class Customer extends AbstractModule
     protected string $url;
 
     /**
-     * Customer constructor.
+     * Service constructor.
      *
      * @param \Suite\Suite\Models\Token $token
      */
     public function __construct(Token $token)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/customers', $this->apiVersion));
+        $this->url = path_join($this->baseUrl, sprintf('api/%s/services', $this->apiVersion));
     }
 
     /**
@@ -44,18 +43,18 @@ class Customer extends AbstractModule
 
     /**
      * @param string $name
-     * @param string $workspace
-     * @param array $services
+     * @param \Illuminate\Http\UploadedFile|null $logo
+     * @param array $infos
      *
      * @return array|mixed
      * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function create(string $name, string $workspace, array $services)
+    public function create(string $name, UploadedFile $logo = null, array $infos)
     {
         return parent::post($this->url, $this->moduleName, [
             'name' => $name,
-            'workspace' => $workspace,
-            'services' => $services,
+            'logo' => $logo,
+            'infos' => $infos
         ]);
     }
 
@@ -73,18 +72,18 @@ class Customer extends AbstractModule
     /**
      * @param int $id
      * @param string $name
-     * @param string $workspace
-     * @param array $services
+     * @param \Illuminate\Http\UploadedFile $logo
+     * @param array $infos
      *
      * @return array|mixed
      * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name, string $workspace, array $services)
+    public function update(int $id, string $name, UploadedFile $logo = null, array $infos)
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, [
             'name' => $name,
-            'workspace' => $workspace,
-            'services' => $services,
+            'logo' => $logo,
+            'infos' => $infos
         ]);
     }
 
@@ -101,15 +100,26 @@ class Customer extends AbstractModule
 
     /**
      * @param int $id
-     * @param array $services
      *
      * @return array|mixed
      * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function syncServices(int $id, array $services)
+    public function getServiceRoles(int $id)
     {
-        return parent::post(path_join($this->url, $id . '/services'), $this->moduleName, [
-            'services' => $services
+        return parent::get(path_join($this->url, "$id/roles"), $this->moduleName);
+    }
+
+    /**
+     * @param int $id
+     * @param array $applicationsId
+     *
+     * @return array|mixed
+     * @throws \Suite\Suite\Exceptions\SuiteException
+     */
+    public function assignApplications(int $id, array $applicationsId)
+    {
+        return parent::post(path_join($this->url, $id), $this->moduleName, [
+            'applications' => $applicationsId
         ]);
     }
 }
