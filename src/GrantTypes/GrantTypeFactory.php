@@ -2,12 +2,18 @@
 
 namespace Suite\Suite\GrantTypes;
 
-use Suite\Suite\Models\AuthTypes;
+use Suite\Suite\Constants\AuthTypes;
 
+/**
+ * Class GrantTypeFactory
+ * @package Suite\Suite\GrantTypes
+ */
 class GrantTypeFactory
 {
 
     /**
+     * create
+     * 
      * @param string $type
      * @param array $config
      *
@@ -16,11 +22,7 @@ class GrantTypeFactory
      */
     public static function create(string $type, array $config = []): GrantTypeInterface
     {
-        if (!in_array($type, AuthTypes::toArray())) {
-            throw new \Exception('The given authentication grant is invalid');
-        }
-
-        $class = sprintf('\\%s\Handlers\\%sHandler', __NAMESPACE__, ucfirst($type));
+        $class = sprintf('\\%s\Handlers\\%sHandler', __NAMESPACE__, ucfirst(snakeToCamel($type)));
         return app($class, ['config' => $config]);
     }
 }
