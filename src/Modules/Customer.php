@@ -5,25 +5,20 @@ namespace Suite\Suite\Modules;
 use Illuminate\Support\Facades\Http;
 use Suite\Suite\Auth;
 use Suite\Suite\Exceptions\SuiteException;
+use Suite\Suite\Models\Token;
 use Suite\Suite\Suite;
 
-class Customer extends Suite
+class Customer extends AbstractModule
 {
-    /**
-     * @var string
-     */
-    protected string $url;
 
     /**
      * Customer constructor.
      *
-     * @param \Suite\Suite\Auth $auth
-     *
-     * @throws \Exception
+     * @param \Suite\Suite\Models\Token $token
      */
-    public function __construct(Auth $auth)
+    public function __construct(Token $token)
     {
-        parent::__construct($auth);
+        parent::__construct($token);
         $this->url = sprintf('api/%s/customers', $this->apiVersion);
     }
 
@@ -36,7 +31,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $this->url);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->get($url);
 
         if ($response->status() == 200) {
@@ -60,7 +55,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $this->url);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->post($url, [
                 'name' => $name,
                 'workspace' => $workspace,
@@ -87,7 +82,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->get($url);
 
         if ($response->status() == 200) {
@@ -113,7 +108,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->put($url, [
                 'name' => $name,
                 'workspace' => $workspace,
@@ -140,7 +135,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->delete($url);
 
         if ($response->status() == 200) {
@@ -164,7 +159,7 @@ class Customer extends Suite
         $url = path_join($this->baseUrl, $route);
 
         $response = Http::acceptJson()
-            ->withToken($this->auth->getToken()->getAccessToken())
+            ->withToken($this->getAccessToken())
             ->put($url, ['services' => $services]);
 
         if ($response->ok()) {
