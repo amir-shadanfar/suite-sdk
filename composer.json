@@ -8,16 +8,10 @@
             "email": "amirshadanfar@teknasyon.com"
         }
     ],
-    "homepage": "https://github.com/teknasyon/suite",
+    "homepage": "git@github.com:amir-shadanfar/suite-sdk.git",
     "keywords": [
         "Laravel",
         "Suite"
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:amir-shadanfar/suite-sdk.git"
-        }
     ],
     "require": {
         "illuminate/support": "~7|~8",
