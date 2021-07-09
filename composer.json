@@ -13,6 +13,12 @@
         "Laravel",
         "Suite"
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:amir-shadanfar/suite-sdk.git"
+        }
+    ],
     "require": {
         "illuminate/support": "~7|~8",
         "illuminate/http": "8.*"
