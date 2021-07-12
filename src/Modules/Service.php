@@ -49,7 +49,7 @@ class Service extends AbstractModule
      * @return array|mixed
      * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function create(string $name, UploadedFile $logo = null, array $infos)
+    public function create(string $name, array $infos, UploadedFile $logo = null)
     {
         return parent::post($this->url, $this->moduleName, [
             'name' => $name,
@@ -78,7 +78,7 @@ class Service extends AbstractModule
      * @return array|mixed
      * @throws \Suite\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name, UploadedFile $logo = null, array $infos)
+    public function update(int $id, string $name = '', array $infos = [], UploadedFile $logo = null)
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, [
             'name' => $name,

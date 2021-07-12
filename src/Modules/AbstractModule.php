@@ -99,9 +99,6 @@ abstract class AbstractModule
      */
     public function put(string $url, string $moduleName, array $data)
     {
-        $route = path_join($this->url, $id);
-        $url = path_join($this->baseUrl, $route);
-
         $response = Http::acceptJson()
             ->withToken($this->getAccessToken())
             ->put($url, $data);
