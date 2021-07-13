@@ -1,12 +1,12 @@
 <?php
 
-namespace Suite\Suite\GrantTypes;
+namespace Rockads\Suite\GrantTypes;
 
-use Suite\Suite\Constants\AuthTypes;
+use Rockads\Suite\Constants\AuthTypes;
 
 /**
  * Class GrantTypeFactory
- * @package Suite\Suite\GrantTypes
+ * @package Rockads\Suite\GrantTypes
  */
 class GrantTypeFactory
 {

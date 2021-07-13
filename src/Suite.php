@@ -1,19 +1,19 @@
 <?php
 
-namespace Suite\Suite;
+namespace Rockads\Suite;
 
-use Suite\Suite\Constants\ModulesType;
-use Suite\Suite\Models\Token;
-use Suite\Suite\Modules\AbstractModule;
+use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Token;
+use Rockads\Suite\Modules\AbstractModule;
 
 /**
  * Class Suite
- * @package Suite\Suite
+ * @package Rockads\Suite
  */
 class Suite
 {
     /**
-     * @var \Suite\Suite\Models\Token
+     * @var \Rockads\Suite\Models\Token
      */
     protected Token $token;
 
@@ -28,14 +28,14 @@ class Suite
     protected $apiVersion;
 
     /**
-     * @var \Suite\Suite\Modules\AbstractModule
+     * @var \Rockads\Suite\Modules\AbstractModule
      */
     protected AbstractModule $module;
 
     /**
      * Suite constructor.
      *
-     * @param \Suite\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Token $token
      *
      * @throws \Exception
      */
@@ -51,7 +51,7 @@ class Suite
      *
      * @param string $moduleName
      *
-     * @return \Illuminate\Contracts\Foundation\Application|mixed|\Suite\Suite\Suite
+     * @return \Illuminate\Contracts\Foundation\Application|mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     protected function setModule(string $moduleName)
@@ -59,14 +59,14 @@ class Suite
         if (!in_array($moduleName, ModulesType::toArray())) {
             throw new \Exception('The given module name is invalid');
         }
-        $this->module = app(sprintf("\Suite\Suite\Modules\%s", $moduleName), ['token' => $this->token]);
+        $this->module = app(sprintf("\Rockads\Suite\Modules\%s", $moduleName), ['token' => $this->token]);
         return $this->module;
     }
 
     /**
      * customer
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function customer()
@@ -77,7 +77,7 @@ class Suite
     /**
      * user
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function user()
@@ -88,7 +88,7 @@ class Suite
     /**
      * service
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function service()
@@ -99,7 +99,7 @@ class Suite
     /**
      * serviceAcl
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function serviceAcl()
@@ -110,7 +110,7 @@ class Suite
     /**
      * group
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function group()
@@ -121,7 +121,7 @@ class Suite
     /**
      * application
      *
-     * @return mixed|\Suite\Suite\Suite
+     * @return mixed|\Rockads\Suite\Suite
      * @throws \Exception
      */
     public function application()

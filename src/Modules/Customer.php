@@ -1,13 +1,13 @@
 <?php
 
-namespace Suite\Suite\Modules;
+namespace Rockads\Suite\Modules;
 
-use Suite\Suite\Constants\ModulesType;
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Token;
 
 /**
  * Class Customer
- * @package Suite\Suite\Modules
+ * @package Rockads\Suite\Modules
  */
 class Customer extends AbstractModule
 {
@@ -25,7 +25,7 @@ class Customer extends AbstractModule
     /**
      * Customer constructor.
      *
-     * @param \Suite\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Token $token
      */
     public function __construct(Token $token)
     {
@@ -35,7 +35,7 @@ class Customer extends AbstractModule
 
     /**
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
     {
@@ -48,7 +48,7 @@ class Customer extends AbstractModule
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(string $name, string $workspace, array $services)
     {
@@ -63,7 +63,7 @@ class Customer extends AbstractModule
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
     {
@@ -77,7 +77,7 @@ class Customer extends AbstractModule
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function update(int $id, string $name, string $workspace, array $services)
     {
@@ -92,7 +92,7 @@ class Customer extends AbstractModule
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)
     {
@@ -104,7 +104,7 @@ class Customer extends AbstractModule
      * @param array $services
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function syncServices(int $id, array $services)
     {

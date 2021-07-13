@@ -1,12 +1,12 @@
 <?php
 
-namespace Suite\Suite\GrantTypes;
+namespace Rockads\Suite\GrantTypes;
 
-use Suite\Suite\Auth;
+use Rockads\Suite\Auth;
 
 /**
  * Class AbstractGrantType
- * @package Suite\Suite\GrantTypes
+ * @package Rockads\Suite\GrantTypes
  */
 abstract class AbstractGrantType implements GrantTypeInterface
 {

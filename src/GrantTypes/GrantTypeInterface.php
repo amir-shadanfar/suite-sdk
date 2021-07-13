@@ -1,12 +1,12 @@
 <?php
 
-namespace Suite\Suite\GrantTypes;
+namespace Rockads\Suite\GrantTypes;
 
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Models\Token;
 
 /**
  * Interface GrantTypeInterface
- * @package Suite\Suite\GrantTypes
+ * @package Rockads\Suite\GrantTypes
  */
 interface GrantTypeInterface
 {

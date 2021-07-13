@@ -1,13 +1,14 @@
 <?php
 
-namespace Suite\Suite\Modules;
+namespace Rockads\Suite\Modules;
 
-use Suite\Suite\Constants\ModulesType;
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Token;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Class Service
- * @package Suite\Suite\Modules
+ * @package Rockads\Suite\Modules
  */
 class Service extends AbstractModule
 {
@@ -24,7 +25,7 @@ class Service extends AbstractModule
     /**
      * Service constructor.
      *
-     * @param \Suite\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Token $token
      */
     public function __construct(Token $token)
     {
@@ -34,7 +35,7 @@ class Service extends AbstractModule
 
     /**
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
     {
@@ -43,11 +44,11 @@ class Service extends AbstractModule
 
     /**
      * @param string $name
-     * @param \Illuminate\Http\UploadedFile|null $logo
+     * @param UploadedFile|null $logo
      * @param array $infos
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(string $name, array $infos, UploadedFile $logo = null)
     {
@@ -62,7 +63,7 @@ class Service extends AbstractModule
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
     {
@@ -72,13 +73,13 @@ class Service extends AbstractModule
     /**
      * @param int $id
      * @param string $name
-     * @param \Illuminate\Http\UploadedFile $logo
+     * @param UploadedFile $logo
      * @param array $infos
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name = '', array $infos = [], UploadedFile $logo = null)
+    public function update(int $id, string $name = '', UploadedFile $logo = null, array $infos = [])
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, [
             'name' => $name,
@@ -91,7 +92,7 @@ class Service extends AbstractModule
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)
     {
@@ -102,7 +103,7 @@ class Service extends AbstractModule
      * @param int $id
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function getServiceRoles(int $id)
     {
@@ -114,7 +115,7 @@ class Service extends AbstractModule
      * @param array $applicationsId
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function assignApplications(int $id, array $applicationsId)
     {

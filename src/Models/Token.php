@@ -1,12 +1,12 @@
 <?php
 
-namespace Suite\Suite\Models;
+namespace Rockads\Suite\Models;
 
 use Carbon\Carbon;
 
 /**
  * Class Token
- * @package Suite\Suite\Models
+ * @package Rockads\Suite\Models
  */
 class Token
 {
@@ -126,7 +126,7 @@ class Token
     }
 
     /**
-     * @param string $expiresIn
+     * @param int $expiresIn
      */
     public function setExpiresIn(int $expiresIn): void
     {

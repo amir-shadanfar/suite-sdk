@@ -1,18 +1,15 @@
 <?php
 
-namespace Suite\Suite\GrantTypes\Handlers;
+namespace Rockads\Suite\GrantTypes\Handlers;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Suite\Suite\Exceptions\SuiteException;
-use Suite\Suite\GrantTypes\AbstractGrantType;
-use Suite\Suite\GrantTypes\Auth;
-use Suite\Suite\GrantTypes\GrantTypeInterface;
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Exceptions\SuiteException;
+use Rockads\Suite\GrantTypes\AbstractGrantType;
+use Rockads\Suite\Models\Token;
 
 /**
  * Class PasswordGrantHandler
- * @package Suite\Suite\GrantTypes\Handlers
+ * @package Rockads\Suite\GrantTypes\Handlers
  */
 class PasswordGrantHandler extends AbstractGrantType
 {
@@ -45,8 +42,8 @@ class PasswordGrantHandler extends AbstractGrantType
     }
 
     /**
-     * @return array
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @return \Rockads\Suite\Models\Token
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function getTokens(): Token
     {

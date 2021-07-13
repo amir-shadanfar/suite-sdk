@@ -1,11 +1,12 @@
 <?php
 
-namespace Suite\Suite\Constants;
+namespace Rockads\Suite\Constants;
 
 trait CustomModelTrait
 {
     /**
      * @return string
+     * @throws \ReflectionException
      */
     public static function commaSeparated()
     {
@@ -13,6 +14,10 @@ trait CustomModelTrait
         return implode(',', $array);
     }
 
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
     public static function toArray()
     {
         $class = static::class;

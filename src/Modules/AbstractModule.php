@@ -1,15 +1,14 @@
 <?php
 
-namespace Suite\Suite\Modules;
+namespace Rockads\Suite\Modules;
 
 use Illuminate\Support\Facades\Http;
-use Suite\Suite\Auth;
-use Suite\Suite\Exceptions\SuiteException;
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Exceptions\SuiteException;
+use Rockads\Suite\Models\Token;
 
 /**
  * Class AbstractModule
- * @package Suite\Suite\Modules
+ * @package Rockads\Suite\Modules
  */
 abstract class AbstractModule
 {
@@ -24,7 +23,7 @@ abstract class AbstractModule
     protected string $apiVersion;
 
     /**
-     * @var \Suite\Suite\Models\Token
+     * @var \Rockads\Suite\Models\Token
      */
     protected Token $token;
 
@@ -51,7 +50,7 @@ abstract class AbstractModule
      * @param string $moduleName
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function get(string $url, string $moduleName)
     {
@@ -73,7 +72,7 @@ abstract class AbstractModule
      * @param array $data
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function post(string $url, string $moduleName, array $data)
     {
@@ -95,7 +94,7 @@ abstract class AbstractModule
      * @param array $data
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function put(string $url, string $moduleName, array $data)
     {
@@ -116,7 +115,7 @@ abstract class AbstractModule
      * @param string $moduleName
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function delete(string $url, string $moduleName)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Suite\Suite\Constants;
+namespace Rockads\Suite\Constants;
 
 class ServiceAclInfoType
 {
