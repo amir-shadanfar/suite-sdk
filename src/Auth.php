@@ -1,17 +1,17 @@
 <?php
 
-namespace Suite\Suite;
+namespace Rockads\Suite;
 
 use Illuminate\Support\Facades\Http;
-use Suite\Suite\Exceptions\SuiteException;
-use Suite\Suite\GrantTypes\GrantTypeFactory;
-use Suite\Suite\GrantTypes\GrantTypeInterface;
-use Suite\Suite\Constants\AuthTypes;
-use Suite\Suite\Models\Token;
+use Rockads\Suite\Exceptions\SuiteException;
+use Rockads\Suite\GrantTypes\GrantTypeFactory;
+use Rockads\Suite\GrantTypes\GrantTypeInterface;
+use Rockads\Suite\Constants\AuthTypes;
+use Rockads\Suite\Models\Token;
 
 /**
  * Class Auth
- * @package Suite\Suite
+ * @package Rockads\Suite
  */
 class Auth
 {
@@ -51,7 +51,7 @@ class Auth
     protected string $grantType;
 
     /**
-     * @var \Suite\Suite\GrantTypes\GrantTypeInterface
+     * @var \Rockads\Suite\GrantTypes\GrantTypeInterface
      */
     protected GrantTypeInterface $grantHandler;
 
@@ -78,7 +78,7 @@ class Auth
     }
 
     /**
-     * @return array|\Suite\Suite\Models\Token
+     * @return array|\Rockads\Suite\Models\Token
      */
     public function getToken()
     {
@@ -103,7 +103,7 @@ class Auth
      * @param string $accessToken
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function getUserByToken(string $accessToken)
     {
@@ -122,8 +122,6 @@ class Auth
     }
 
     /**
-     * @param string $clientId
-     * @param string $clientSecret
      * @param string $customerName
      * @param string $customerWorkspace
      * @param array $customer_services
@@ -136,7 +134,7 @@ class Auth
      * @param string|null $avatar
      *
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function register(
         string $customerName,
@@ -182,8 +180,8 @@ class Auth
     /**
      * @param string|null $refreshToken
      *
-     * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @return array|\Rockads\Suite\Models\Token|null
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function refreshToken(string $refreshToken = null)
     {
@@ -212,7 +210,7 @@ class Auth
 
     /**
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function resendVerificationEmail()
     {
@@ -235,7 +233,7 @@ class Auth
 
     /**
      * @return array|mixed
-     * @throws \Suite\Suite\Exceptions\SuiteException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function logout()
     {

@@ -1,12 +1,13 @@
 <?php
 
-namespace Suite\Suite;
+namespace Rockads\Suite;
 
 use Illuminate\Support\ServiceProvider;
+use Rockads\Suite\Models\Token;
 
 /**
  * Class SuiteServiceProvider
- * @package Suite\Suite
+ * @package Rockads\Suite
  */
 class SuiteServiceProvider extends ServiceProvider
 {
@@ -31,8 +32,8 @@ class SuiteServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/suite.php', 'suite');
 
         // Register the service the package provides.
-        $this->app->singleton('suite', function ($app, Auth $auth) {
-            return new Suite($auth);
+        $this->app->singleton('suite', function ($app, Token $token) {
+            return new Suite($token);
         });
     }
 

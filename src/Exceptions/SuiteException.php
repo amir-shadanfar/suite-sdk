@@ -1,6 +1,6 @@
 <?php
 
-namespace Suite\Suite\Exceptions;
+namespace Rockads\Suite\Exceptions;
 
 use Exception;
 
@@ -11,10 +11,11 @@ class SuiteException extends Exception
     protected $code;
 
     /**
-     * EuroMessageException constructor.
+     * SuiteException constructor.
      *
-     * @param String $message
-     * @param  $data
+     * @param string $message
+     * @param $data
+     * @param $exceptionCode
      */
     public function __construct(string $message, $data, $exceptionCode)
     {
