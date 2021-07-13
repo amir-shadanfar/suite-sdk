@@ -80,7 +80,7 @@ abstract class AbstractModule
             ->withToken($this->getAccessToken())
             ->post($url, $data);
 
-        if ($response->status() == 201) {
+        if ($response->status() == 201 || $response->status() == 200) {
             return $response->json();
         } else {
             $message = is_array($response->json()['message']) ? "Error in calling create in $moduleName" : $response->json()['message'];
