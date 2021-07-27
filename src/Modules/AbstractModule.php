@@ -61,7 +61,7 @@ abstract class AbstractModule
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            $message = is_array($response->json()['message']) ? "Error in calling all $moduleName" : $response->json()['message'];
+            $message = is_array($response->json()['message']) ? "Error in calling GET in $moduleName module" : $response->json()['message'];
             throw new SuiteException($message, $response->json(), $response->status());
         }
     }
@@ -70,20 +70,28 @@ abstract class AbstractModule
      * @param string $url
      * @param string $moduleName
      * @param array $data
+     * @param array $files
      *
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function post(string $url, string $moduleName, array $data)
+    public function post(string $url, string $moduleName, array $data, array $files = [])
     {
-        $response = Http::acceptJson()
-            ->withToken($this->getAccessToken())
-            ->post($url, $data);
+        $response = Http::acceptJson()->withToken($this->getAccessToken());
+        if (count($files)) {
+            foreach ($files as $k => $file) {
+                if (!is_null($file)){
+                    // var_dump($file);
+                    $response = $response->attach('file[' . $k . ']', $file);
+                }
+            }
+        }
+        $response = $response->post($url, $data);
 
-        if ($response->status() == 201 || $response->status() == 200) {
+        if ($response->status() ==  200 && $response->status() == 201) {
             return $response->json();
         } else {
-            $message = is_array($response->json()['message']) ? "Error in calling create in $moduleName" : $response->json()['message'];
+            $message = is_array($response->json()['message']) ? "Error in calling POST in $moduleName module" : $response->json()['message'];
             throw new SuiteException($message, $response->json(), $response->status());
         }
     }
@@ -92,20 +100,28 @@ abstract class AbstractModule
      * @param string $url
      * @param string $moduleName
      * @param array $data
+     * @param array $files
      *
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function put(string $url, string $moduleName, array $data)
+    public function put(string $url, string $moduleName, array $data, array $files = [])
     {
-        $response = Http::acceptJson()
-            ->withToken($this->getAccessToken())
-            ->put($url, $data);
+        $response = Http::acceptJson()->withToken($this->getAccessToken());
+        if (count($files)) {
+            foreach ($files as $k => $file) {
+                if (!is_null($file)){
+                    // var_dump($file);
+                    $response = $response->attach('file[' . $k . ']', $file);
+                }
+            }
+        }
+        $response = $response->put($url, $data);
 
-        if ($response->status() == 200) {
+        if ($response->status() ==  200 && $response->status() == 201) {
             return $response->json();
         } else {
-            $message = is_array($response->json()['message']) ? "Error in calling update in $moduleName" : $response->json()['message'];
+            $message = is_array($response->json()['message']) ? "Error in calling PUT in $moduleName module" : $response->json()['message'];
             throw new SuiteException($message, $response->json(), $response->status());
         }
     }
@@ -126,7 +142,7 @@ abstract class AbstractModule
         if ($response->status() == 200) {
             return $response->json();
         } else {
-            $message = is_array($response->json()['message']) ? "Error in calling delete in $moduleName" : $response->json()['message'];
+            $message = is_array($response->json()['message']) ? "Error in calling DELETE in $moduleName module" : $response->json()['message'];
             throw new SuiteException($message, $response->json(), $response->status());
         }
     }
