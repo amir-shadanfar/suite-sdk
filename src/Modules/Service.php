@@ -100,17 +100,7 @@ class Service extends AbstractModule
     }
 
     /**
-     * @param int $id
-     *
-     * @return array|mixed
-     * @throws \Rockads\Suite\Exceptions\SuiteException
-     */
-    public function getServiceRoles(int $id)
-    {
-        return parent::get(path_join($this->url, "$id/roles"), $this->moduleName);
-    }
-
-    /**
+     * assign application to a service
      * @param int $id
      * @param array $applicationsId
      *
@@ -122,5 +112,18 @@ class Service extends AbstractModule
         return parent::post(path_join($this->url, "$id/applications"), $this->moduleName, [
             'applications' => $applicationsId
         ]);
+    }
+
+    /**
+     * get service's role|permissions
+     * 
+     * @param int $id
+     *
+     * @return array|mixed
+     * @throws \Rockads\Suite\Exceptions\SuiteException
+     */
+    public function acl(int $id)
+    {
+        return parent::get(path_join($this->url, "$id/acl"), $this->moduleName);
     }
 }

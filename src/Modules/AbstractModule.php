@@ -81,13 +81,11 @@ abstract class AbstractModule
         if (count($files)) {
             foreach ($files as $k => $file) {
                 if (!is_null($file)){
-                    // var_dump($file);
                     $response = $response->attach('file[' . $k . ']', $file);
                 }
             }
         }
         $response = $response->post($url, $data);
-
         if ($response->status() ==  200 && $response->status() == 201) {
             return $response->json();
         } else {
@@ -111,14 +109,12 @@ abstract class AbstractModule
         if (count($files)) {
             foreach ($files as $k => $file) {
                 if (!is_null($file)){
-                    // var_dump($file);
                     $response = $response->attach('file[' . $k . ']', $file);
                 }
             }
         }
         $response = $response->put($url, $data);
-
-        if ($response->status() ==  200 && $response->status() == 201) {
+        if ($response->status() ==  200) {
             return $response->json();
         } else {
             $message = is_array($response->json()['message']) ? "Error in calling PUT in $moduleName module" : $response->json()['message'];
