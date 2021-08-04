@@ -86,7 +86,7 @@ abstract class AbstractModule
             }
         }
         $response = $response->post($url, $data);
-        if ($response->status() ==  200 && $response->status() == 201) {
+        if ($response->status() ==  200 || $response->status() == 201) {
             return $response->json();
         } else {
             $message = is_array($response->json()['message']) ? "Error in calling POST in $moduleName module" : $response->json()['message'];
@@ -114,7 +114,7 @@ abstract class AbstractModule
             }
         }
         $response = $response->put($url, $data);
-        if ($response->status() ==  200) {
+        if ($response->status() ==  200 || $response->status() == 201) {
             return $response->json();
         } else {
             $message = is_array($response->json()['message']) ? "Error in calling PUT in $moduleName module" : $response->json()['message'];

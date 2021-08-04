@@ -56,7 +56,9 @@ class Service extends AbstractModule
             'name' => $name,
             'logo' => $logo,
             'infos' => $infos
-        ]);
+        ],
+            ['logo' => $logo]
+        );
     }
 
     /**
@@ -85,7 +87,9 @@ class Service extends AbstractModule
             'name' => $name,
             'logo' => $logo,
             'infos' => $infos
-        ]);
+        ],
+            ['logo' => $logo]
+        );
     }
 
     /**
@@ -101,6 +105,7 @@ class Service extends AbstractModule
 
     /**
      * assign application to a service
+     *
      * @param int $id
      * @param array $applicationsId
      *
@@ -116,7 +121,7 @@ class Service extends AbstractModule
 
     /**
      * get service's role|permissions
-     * 
+     *
      * @param int $id
      *
      * @return array|mixed

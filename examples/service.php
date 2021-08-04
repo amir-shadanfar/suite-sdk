@@ -5,7 +5,6 @@ use Rockads\Suite\Constants\ServiceAclInfoType;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\Suite;
 
-include_once '../../../../../vendor/autoload.php';
 
 try {
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::PASSWORD_GRANT, [
@@ -15,7 +14,9 @@ try {
     ]);
     // token can be cached as mention in example/auth/token.php
     $token = $auth->getToken();
-    // service crud
+    // uploaded file
+    $image = fopen(public_path('images/avatar.png'),'r');
+    // crud
     $suite = new Suite($token);
     $result = $suite->service()->all();
     /**
@@ -23,7 +24,7 @@ try {
         ServiceAclInfoType::BASE_URL => 'http://localhost',
         ServiceAclInfoType::ACL_ROLES_URL => 'acl',
         ServiceAclInfoType::ACL_ROLES_METHOD => 'get',
-    ]);
+    ],$image);
     $result = $suite->service()->show(1);
     $result = $suite->service()->update(1, 'service edited',[
         ServiceAclInfoType::BASE_URL => 'http://localhost',

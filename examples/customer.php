@@ -4,8 +4,6 @@ use Rockads\Suite\Constants\AuthTypes;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\Suite;
 
-include_once '../../../../../vendor/autoload.php';
-
 try {
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::PASSWORD_GRANT, [
         'username' => 'user@example.com',

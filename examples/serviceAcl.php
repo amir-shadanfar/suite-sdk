@@ -5,8 +5,6 @@ use Rockads\Suite\Constants\ServiceAclInfoType;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\Suite;
 
-include_once '../../../../../vendor/autoload.php';
-
 try {
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::CLIENT_CREDENTIALS);
     // token can be cached as mention in example/auth/token.php
