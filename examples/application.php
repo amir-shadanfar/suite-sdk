@@ -5,6 +5,7 @@ use Rockads\Suite\Constants\ServiceAclInfoType;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\Suite;
 
+
 try {
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::PASSWORD_GRANT, [
         'username' => 'user@example.com',
@@ -12,7 +13,7 @@ try {
         'workspace' => 'workspace_one',
     ]);
     // token can be cached as mention in example/auth/token.php
-    $token = $auth->getToken();
+    $token = $suiteAuth->getToken();
     // service crud
     $suite = new Suite($token);
     // uploaded file

@@ -43,7 +43,7 @@ class ServiceAcl extends AbstractModule
     }
 
     /**
-     * @param string $batchData
+     * @param array $batchData
      *
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
@@ -52,18 +52,26 @@ class ServiceAcl extends AbstractModule
     {
         return parent::post($this->url, $this->moduleName, $batchData);
     }
-    
 
     /**
-     * @param int $id
-     * @param string $name
-     * @param UploadedFile $logo
-     * @param array $infos
+     * @param array $batchData
      *
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, array $data )
+    public function createOrUpdate(array $batchData)
+    {
+        return parent::post(path_join($this->url, 'batch'), $this->moduleName, $batchData);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     *
+     * @return array|mixed
+     * @throws \Rockads\Suite\Exceptions\SuiteException
+     */
+    public function update(int $id, array $data)
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, $data);
     }

@@ -11,7 +11,7 @@ try {
         'workspace' => 'workspace_one',
     ]);
     // token can be cached as mention in example/auth/token.php
-    $token = $auth->getToken();
+    $token = $suiteAuth->getToken();
     // customer crud
     $suite = new Suite($token);
     $result = $suite->customer()->all();
