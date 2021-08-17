@@ -58,7 +58,9 @@ class Application extends AbstractModule
             'platform' => $platform,
             'bundle_id' => $bundleId,
             'icon' => $icon,
-        ]);
+        ],
+            ['icon' => $icon]
+        );
     }
 
     /**
@@ -89,7 +91,9 @@ class Application extends AbstractModule
             'platform' => $platform,
             'bundle_id' => $bundleId,
             'icon' => $icon,
-        ]);
+        ],
+            ['icon' => $icon]
+        );
     }
 
     /**
@@ -102,6 +106,5 @@ class Application extends AbstractModule
     {
         return parent::delete(path_join($this->url, $id), $this->moduleName);
     }
-
 
 }

@@ -168,7 +168,7 @@ class Auth
                 'timezone' => $timezone,
                 'avatar' => $avatar,
             ]);
-
+        
         if ($response->status() == 201) {
             return $response->json();
         } else {

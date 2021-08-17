@@ -4,17 +4,18 @@ namespace Rockads\Suite\Modules;
 
 use Rockads\Suite\Constants\ModulesType;
 use Rockads\Suite\Models\Token;
+use Illuminate\Http\UploadedFile;
 
 /**
- * Class Group
+ * Class ServiceAcl
  * @package Rockads\Suite\Modules
  */
-class Group extends AbstractModule
+class ServiceAcl extends AbstractModule
 {
     /**
      * @var string
      */
-    protected string $moduleName = ModulesType::GROUP;
+    protected string $moduleName = ModulesType::SERVICE_ACL;
 
     /**
      * @var string
@@ -22,14 +23,14 @@ class Group extends AbstractModule
     protected string $url;
 
     /**
-     * Group constructor.
+     * Service constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
      */
     public function __construct(Token $token)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/groups', $this->apiVersion));
+        $this->url = path_join($this->baseUrl, sprintf('api/%s/m2m/services/acl', $this->apiVersion));
     }
 
     /**
@@ -42,30 +43,16 @@ class Group extends AbstractModule
     }
 
     /**
-     * @param string $name
-     * @param UploadedFile|null $logo
-     * @param array $infos
+     * @param string $batchData
      *
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function create(string $name)
+    public function create(array $batchData)
     {
-        return parent::post($this->url, $this->moduleName, [
-            'name' => $name,
-        ]);
+        return parent::post($this->url, $this->moduleName, $batchData);
     }
-
-    /**
-     * @param int $id
-     *
-     * @return array|mixed
-     * @throws \Rockads\Suite\Exceptions\SuiteException
-     */
-    public function show(int $id)
-    {
-        return parent::get(path_join($this->url, $id), $this->moduleName);
-    }
+    
 
     /**
      * @param int $id
@@ -76,11 +63,9 @@ class Group extends AbstractModule
      * @return array|mixed
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name = '', UploadedFile $logo = null, array $infos = [])
+    public function update(int $id, array $data )
     {
-        return parent::put(path_join($this->url, $id), $this->moduleName, [
-            'name' => $name,
-        ]);
+        return parent::put(path_join($this->url, $id), $this->moduleName, $data);
     }
 
     /**
@@ -93,17 +78,4 @@ class Group extends AbstractModule
     {
         return parent::delete(path_join($this->url, $id), $this->moduleName);
     }
-
-    /**
-     * @param int $id
-     *
-     * @return mixed
-     */
-    public function assignApplication(int $id, array $applicationsId)
-    {
-        return parent::post(path_join($this->url, "$id/applications"), $this->moduleName, [
-            'applications' => $applicationsId
-        ]);
-    }
-
 }
