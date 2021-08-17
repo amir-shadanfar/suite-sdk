@@ -12,7 +12,7 @@ try {
         'workspace' => 'workspace_one',
     ]);
     // token can be cached as mention in example/auth/token.php
-    $token = $auth->getToken();
+    $token = $suiteAuth->getToken();
     // service crud
     $suite = new Suite($token);
     $result = $suite->application()->all();

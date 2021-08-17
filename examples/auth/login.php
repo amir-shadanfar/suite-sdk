@@ -1,16 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
 use Rockads\Suite\Constants\AuthTypes;
 use Rockads\Suite\Exceptions\SuiteException;
-
-include_once '../../../../../vendor/autoload.php';
 
 const TOKEN_KEY = "suite_auth_token";
 
 try {
     // get token from cache
-    if (Cache::has(self::TOKEN_KEY)) {
-        return Cache::get(self::TOKEN_KEY);
+    if (Cache::has(TOKEN_KEY)) {
+        return Cache::get(TOKEN_KEY);
     }
     
     // 1.user-based auth---------------------
@@ -28,7 +27,7 @@ try {
     $date = $token->getExpiresIn();
     $cachePeriod = $date->getTimestamp() - $now->getTimestamp();
     Cache::put(
-        self::TOKEN_KEY,
+        TOKEN_KEY,
         $token,
         $cachePeriod
     );

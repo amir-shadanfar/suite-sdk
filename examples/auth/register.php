@@ -3,13 +3,11 @@
 use Rockads\Suite\Constants\AuthTypes;
 use Rockads\Suite\Exceptions\SuiteException;
 
-include_once '../../../../../vendor/autoload.php';
-
 try {
     // dont need to get token, send clientId & clientSecret
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::CLIENT_CREDENTIALS);
 
-    return $auth->register(
+    return $suiteAuth->register(
         "customer_name",
         "customer_workspace",
         [1],
