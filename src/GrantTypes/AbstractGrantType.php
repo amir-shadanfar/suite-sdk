@@ -3,6 +3,7 @@
 namespace Rockads\Suite\GrantTypes;
 
 use Rockads\Suite\Auth;
+use Rockads\Suite\Config;
 
 /**
  * Class AbstractGrantType
@@ -25,7 +26,10 @@ abstract class AbstractGrantType implements GrantTypeInterface
      */
     public function __construct()
     {
-        $this->baseUrl = config('suite.base_url');
-        $this->apiVersion = config('suite.api_version');
+        // get config singleton
+        $config = Config::getInstance();
+
+        $this->baseUrl = $config->get('base_url');
+        $this->apiVersion = $config->get('api_version');
     }
 }

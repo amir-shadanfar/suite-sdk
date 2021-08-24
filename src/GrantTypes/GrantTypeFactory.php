@@ -23,6 +23,6 @@ class GrantTypeFactory
     public static function create(string $type, array $config = []): GrantTypeInterface
     {
         $class = sprintf('\\%s\Handlers\\%sHandler', __NAMESPACE__, ucfirst(snakeToCamel($type)));
-        return app($class, ['config' => $config]);
+        return new $class($config);
     }
 }

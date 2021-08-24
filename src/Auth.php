@@ -59,22 +59,25 @@ class Auth
      * Auth constructor.
      *
      * @param string $authType
-     * @param array $config
+     * @param array $configParams
      *
-     * @throws \Exception
+     * @throws \ReflectionException
      */
-    public function __construct(string $authType, array $config = [])
+    public function __construct(string $authType, array $configParams = [])
     {
-        $this->baseUrl = config('suite.base_url');
-        $this->apiVersion = config('suite.api_version');
-        $this->clientId = config('suite.auth.client_id');
-        $this->clientSecret = config('suite.auth.client_secret');
+        // get config singleton
+        $config = Config::getInstance();
+
+        $this->baseUrl = $config->get('base_url');
+        $this->apiVersion = $config->get('api_version');
+        $this->clientId = $config->get('auth.client_id');
+        $this->clientSecret = $config->get('auth.client_secret');
         // check auth type
         if (!in_array($authType, AuthTypes::toArray())) {
             throw new \Exception('The given authentication grant type is invalid');
         }
         $this->grantType = $authType;
-        $this->grantHandler = GrantTypeFactory::create($authType, $config);
+        $this->grantHandler = GrantTypeFactory::create($authType, $configParams);
     }
 
     /**

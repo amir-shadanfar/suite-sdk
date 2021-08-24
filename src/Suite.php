@@ -41,8 +41,11 @@ class Suite
      */
     public function __construct(Token $token)
     {
-        $this->baseUrl = config('suite.base_url');
-        $this->apiVersion = config('suite.api_version');
+        // get config singleton
+        $config = Config::getInstance();
+
+        $this->baseUrl = $config->get('base_url');
+        $this->apiVersion = $config->get('api_version');
         $this->token = $token;
     }
 
@@ -59,7 +62,8 @@ class Suite
         if (!in_array($moduleName, ModulesType::toArray())) {
             throw new \Exception('The given module name is invalid');
         }
-        $this->module = app(sprintf("\Rockads\Suite\Modules\%s", $moduleName), ['token' => $this->token]);
+        $class = sprintf("\Rockads\Suite\Modules\%s", $moduleName);
+        $this->module = new $class($this->token);
         return $this->module;
     }
 

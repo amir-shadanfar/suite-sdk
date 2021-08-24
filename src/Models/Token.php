@@ -43,8 +43,11 @@ class Token
         if ($this->valid($data)) {
             $this->setTokenType($data['data']['token']['token_type']);
             $this->setAccessToken($data['data']['token']['access_token']);
-            $this->setRefreshToken($data['data']['token']['refresh_token']);
             $this->setExpiresIn($data['data']['token']['expires_in']);
+            // client_credential: refreshToken not set
+            if (isset($data['data']['token']['refresh_token'])) {
+                $this->setRefreshToken($data['data']['token']['refresh_token']);
+            }
             // in m2m grant type user is null
             unset($data['data']['token']);
             $this->setUser($data['data']);
@@ -58,12 +61,12 @@ class Token
      */
     private function valid(array $data = [])
     {
-        $tokenInfo = $data['data']['token'];
+        $tokenInfo = (array)$data['data']['token'];
 
         if (count($tokenInfo) < 1)
             return false;
 
-        if (!isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['refresh_token']) || !isset($tokenInfo['expires_in']))
+        if (!isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['expires_in']))
             return false;
 
         return true;

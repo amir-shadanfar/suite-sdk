@@ -2,7 +2,8 @@
 
 namespace Rockads\Suite\GrantTypes\Handlers;
 
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use Rockads\Suite\Config;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\GrantTypes\AbstractGrantType;
 use Rockads\Suite\Models\Token;
@@ -24,7 +25,7 @@ class ClientCredentialsHandler extends AbstractGrantType
     public function __construct()
     {
         parent::__construct();
-        $this->url = sprintf('api/%s/auth/login_m2m', $this->apiVersion);
+        $this->url = sprintf('api/%s/auth/login-m2m', $this->apiVersion);
     }
 
     /**
@@ -33,16 +34,24 @@ class ClientCredentialsHandler extends AbstractGrantType
      */
     public function getTokens(): Token
     {
+        $config = Config::getInstance();
+
         $loginParams = [
-            "client_id" => config('suite.auth.client_id'),
-            "client_secret" => config('suite.auth.client_secret'),
+            "client_id" => $config->get('auth.client_id'),
+            "client_secret" => $config->get('auth.client_secret'),
         ];
+        
         $url = path_join($this->baseUrl, $this->url);
-        $response = Http::post($url, $loginParams);
-        if ($response->ok()) {
-            return new Token($response->json());
+
+        $client = new Client();
+        $response = $client->post($url, [
+            'json' => $loginParams
+        ]);
+        $content = json_decode($response->getBody()->getContents(),true);
+        if ($response->getStatusCode() == 200) {
+            return new Token($content);
         } else {
-            throw new SuiteException($response->json()['message'], $response->json(), $response->status());
+            throw new SuiteException($content['message'], $content, $response->getStatusCode());
         }
     }
 }
