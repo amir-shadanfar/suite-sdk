@@ -2,8 +2,6 @@
 
 namespace Rockads\Suite\Models;
 
-use Carbon\Carbon;
-
 /**
  * Class Token
  * @package Rockads\Suite\Models
@@ -26,9 +24,9 @@ class Token
     protected string $refreshToken;
 
     /**
-     * @var \DateTime
+     * @var string
      */
-    protected \DateTime $expiresIn;
+    protected string $expiresIn;
 
     /**
      * @var array
@@ -36,15 +34,22 @@ class Token
     protected array $user = [];
 
     /**
+     * Token constructor.
+     *
      * @param array $data
+     *
+     * @throws \Exception
      */
     public function __construct(array $data)
     {
         if ($this->valid($data)) {
             $this->setTokenType($data['data']['token']['token_type']);
             $this->setAccessToken($data['data']['token']['access_token']);
-            $this->setRefreshToken($data['data']['token']['refresh_token']);
             $this->setExpiresIn($data['data']['token']['expires_in']);
+            // client_credential: refreshToken not set
+            if (isset($data['data']['token']['refresh_token'])) {
+                $this->setRefreshToken($data['data']['token']['refresh_token']);
+            }
             // in m2m grant type user is null
             unset($data['data']['token']);
             $this->setUser($data['data']);
@@ -58,12 +63,12 @@ class Token
      */
     private function valid(array $data = [])
     {
-        $tokenInfo = $data['data']['token'];
+        $tokenInfo = (array)$data['data']['token'];
 
         if (count($tokenInfo) < 1)
             return false;
 
-        if (!isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['refresh_token']) || !isset($tokenInfo['expires_in']))
+        if (!isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['expires_in']))
             return false;
 
         return true;
@@ -127,13 +132,14 @@ class Token
 
     /**
      * @param int $expiresIn
+     *
+     * @throws \Exception
      */
     public function setExpiresIn(int $expiresIn): void
     {
-        $this->expiresIn = Carbon::now()
-            ->addSeconds($expiresIn)
-            // ->setTimezone()
-            ->toDateTime();
+        $date = new \DateTime();
+        $date->add(new \DateInterval('PT' . $expiresIn . 'S'));
+        $this->expiresIn = date('m-d-Y H:i:s',$date->getTimestamp());
     }
 
 

@@ -3,8 +3,8 @@
 namespace Rockads\Suite\Modules;
 
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
-use Illuminate\Http\UploadedFile;
 
 /**
  * Class ServiceAcl
@@ -23,18 +23,20 @@ class ServiceAcl extends AbstractModule
     protected string $url;
 
     /**
-     * Service constructor.
+     * ServiceAcl constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/m2m/services/acl', $this->apiVersion));
+        $this->url = path_join($config->getBaseUrl(), sprintf('api/%s/m2m/services/acl', $config->getApiVersion()));
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
@@ -45,7 +47,8 @@ class ServiceAcl extends AbstractModule
     /**
      * @param array $batchData
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(array $batchData)
@@ -56,7 +59,8 @@ class ServiceAcl extends AbstractModule
     /**
      * @param array $batchData
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function createOrUpdate(array $batchData)
@@ -68,7 +72,8 @@ class ServiceAcl extends AbstractModule
      * @param int $id
      * @param array $data
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function update(int $id, array $data)
@@ -79,7 +84,8 @@ class ServiceAcl extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)

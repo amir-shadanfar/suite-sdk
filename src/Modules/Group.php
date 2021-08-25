@@ -3,6 +3,7 @@
 namespace Rockads\Suite\Modules;
 
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
 
 /**
@@ -25,15 +26,17 @@ class Group extends AbstractModule
      * Group constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/groups', $this->apiVersion));
+        $this->url = path_join($config->getBaseUrl(), sprintf('api/%s/groups', $config->getApiVersion()));
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
@@ -43,10 +46,9 @@ class Group extends AbstractModule
 
     /**
      * @param string $name
-     * @param UploadedFile|null $logo
-     * @param array $infos
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(string $name)
@@ -59,7 +61,8 @@ class Group extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
@@ -70,13 +73,12 @@ class Group extends AbstractModule
     /**
      * @param int $id
      * @param string $name
-     * @param UploadedFile $logo
-     * @param array $infos
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name = '', UploadedFile $logo = null, array $infos = [])
+    public function update(int $id, string $name)
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, [
             'name' => $name,
@@ -86,7 +88,8 @@ class Group extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)
@@ -96,8 +99,11 @@ class Group extends AbstractModule
 
     /**
      * @param int $id
+     * @param array $applicationsId
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function assignApplication(int $id, array $applicationsId)
     {

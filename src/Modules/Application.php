@@ -2,8 +2,8 @@
 
 namespace Rockads\Suite\Modules;
 
-use Illuminate\Http\UploadedFile;
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
 
 /**
@@ -23,18 +23,20 @@ class Application extends AbstractModule
     protected string $url;
 
     /**
-     * Group constructor.
+     * Application constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/applications', $this->apiVersion));
+        $this->url = path_join($config->getBaseUrl(), sprintf('api/%s/applications', $config->getApiVersion()));
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
@@ -46,9 +48,10 @@ class Application extends AbstractModule
      * @param string $name
      * @param string $platform
      * @param string $bundleId
-     * @param \Illuminate\Http\UploadedFile|string|null $icon
+     * @param null $icon
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(string $name, string $platform, string $bundleId, $icon = null)
@@ -66,7 +69,8 @@ class Application extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
@@ -79,9 +83,10 @@ class Application extends AbstractModule
      * @param string|null $name
      * @param string|null $platform
      * @param string|null $bundleId
-     * @param \Illuminate\Http\UploadedFile|string|null $icon
+     * @param null $icon
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function update(int $id, string $name = null, string $platform = null, string $bundleId = null, $icon = null)
@@ -99,7 +104,8 @@ class Application extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)

@@ -3,6 +3,7 @@
 namespace Rockads\Suite\GrantTypes;
 
 use Rockads\Suite\Constants\AuthTypes;
+use Rockads\Suite\Models\Config;
 
 /**
  * Class GrantTypeFactory
@@ -12,17 +13,14 @@ class GrantTypeFactory
 {
 
     /**
-     * create
-     * 
      * @param string $type
-     * @param array $config
+     * @param \Rockads\Suite\Models\Config $config
      *
-     * @return GrantTypeInterface
-     * @throws \Exception
+     * @return \Rockads\Suite\GrantTypes\GrantTypeInterface
      */
-    public static function create(string $type, array $config = []): GrantTypeInterface
+    public static function create(string $type, Config $config): GrantTypeInterface
     {
         $class = sprintf('\\%s\Handlers\\%sHandler', __NAMESPACE__, ucfirst(snakeToCamel($type)));
-        return app($class, ['config' => $config]);
+        return new $class($config);
     }
 }

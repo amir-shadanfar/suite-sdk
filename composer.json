@@ -4,11 +4,10 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Amir",
+      "name": "Amir Shadanfar",
       "email": "amirshadanfar@teknasyon.com"
     }
   ],
-  "homepage": "git@github.com:amir-shadanfar/suite-sdk.git",
   "keywords": [
     "Php",
     "Suite",
@@ -16,8 +15,7 @@
   ],
   "require": {
     "php": "^7.4|^8.0",
-    "illuminate/support": "~7|~8",
-    "illuminate/http": "8.*"
+    "guzzlehttp/guzzle": "^7.3"
   },
   "require-dev": {
     "phpunit/phpunit": "~9.0"

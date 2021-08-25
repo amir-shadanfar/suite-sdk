@@ -2,7 +2,8 @@
 
 namespace Rockads\Suite\GrantTypes\Handlers;
 
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\GrantTypes\AbstractGrantType;
 use Rockads\Suite\Models\Token;
@@ -14,35 +15,44 @@ use Rockads\Suite\Models\Token;
 class ClientCredentialsHandler extends AbstractGrantType
 {
     /**
+     * @var \Rockads\Suite\Models\Config
+     */
+    protected Config $config;
+
+    /**
      * @var string
      */
     protected string $url;
 
     /**
-     * ClientCredentialsHandler constructor.
+     * @var string
      */
-    public function __construct()
+    protected string $moduleName = 'ClientCredential';
+
+    /**
+     * ClientCredentialsHandler constructor.
+     *
+     * @param \Rockads\Suite\Models\Config $config
+     */
+    public function __construct(Config $config)
     {
-        parent::__construct();
-        $this->url = sprintf('api/%s/auth/login_m2m', $this->apiVersion);
+        $this->config = $config;
+        $this->url = sprintf('api/%s/auth/login-m2m', $config->getApiVersion());
     }
 
     /**
      * @return \Rockads\Suite\Models\Token
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function getTokens(): Token
     {
         $loginParams = [
-            "client_id" => config('suite.auth.client_id'),
-            "client_secret" => config('suite.auth.client_secret'),
+            "client_id" => $this->config->getClientId(),
+            "client_secret" => $this->config->getClientSecret(),
         ];
-        $url = path_join($this->baseUrl, $this->url);
-        $response = Http::post($url, $loginParams);
-        if ($response->ok()) {
-            return new Token($response->json());
-        } else {
-            throw new SuiteException($response->json()['message'], $response->json(), $response->status());
-        }
+
+        $content = $this->post(path_join($this->config->getBaseUrl(), $this->url), $this->moduleName, $loginParams);
+        return new Token($content);
     }
 }
