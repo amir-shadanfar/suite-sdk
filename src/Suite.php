@@ -3,6 +3,7 @@
 namespace Rockads\Suite;
 
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
 use Rockads\Suite\Modules\AbstractModule;
 
@@ -18,14 +19,9 @@ class Suite
     protected Token $token;
 
     /**
-     * @var string
+     * @var \Rockads\Suite\Models\Config
      */
-    protected $baseUrl;
-
-    /**
-     * @var string
-     */
-    protected $apiVersion;
+    protected Config $config;
 
     /**
      * @var \Rockads\Suite\Modules\AbstractModule
@@ -36,34 +32,27 @@ class Suite
      * Suite constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
-     *
-     * @throws \Exception
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
-        // get config singleton
-        $config = Config::getInstance();
-
-        $this->baseUrl = $config->get('base_url');
-        $this->apiVersion = $config->get('api_version');
         $this->token = $token;
+        $this->config = $config;
     }
 
     /**
-     * setModule
-     *
      * @param string $moduleName
      *
-     * @return \Illuminate\Contracts\Foundation\Application|mixed|\Rockads\Suite\Suite
-     * @throws \Exception
+     * @return \Rockads\Suite\Modules\AbstractModule
+     * @throws \ReflectionException
      */
-    protected function setModule(string $moduleName)
+    protected function setModule(string $moduleName): AbstractModule
     {
         if (!in_array($moduleName, ModulesType::toArray())) {
             throw new \Exception('The given module name is invalid');
         }
         $class = sprintf("\Rockads\Suite\Modules\%s", $moduleName);
-        $this->module = new $class($this->token);
+        $this->module = new $class($this->token, $this->config);
         return $this->module;
     }
 

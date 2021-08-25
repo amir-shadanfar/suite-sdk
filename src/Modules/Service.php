@@ -3,8 +3,8 @@
 namespace Rockads\Suite\Modules;
 
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
-use Illuminate\Http\UploadedFile;
 
 /**
  * Class Service
@@ -26,15 +26,17 @@ class Service extends AbstractModule
      * Service constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/services', $this->apiVersion));
+        $this->url = path_join($config->getBaseUrl(), sprintf('api/%s/services', $config->getApiVersion()));
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
@@ -44,13 +46,14 @@ class Service extends AbstractModule
 
     /**
      * @param string $name
-     * @param UploadedFile|null $logo
      * @param array $infos
+     * @param null $logo
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function create(string $name, array $infos, UploadedFile $logo = null)
+    public function create(string $name, array $infos, $logo = null)
     {
         return parent::post($this->url, $this->moduleName, [
             'name' => $name,
@@ -64,7 +67,8 @@ class Service extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
@@ -75,13 +79,14 @@ class Service extends AbstractModule
     /**
      * @param int $id
      * @param string $name
-     * @param UploadedFile $logo
+     * @param null $logo
      * @param array $infos
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
-    public function update(int $id, string $name = '', UploadedFile $logo = null, array $infos = [])
+    public function update(int $id, string $name = '', $logo = null, array $infos = [])
     {
         return parent::put(path_join($this->url, $id), $this->moduleName, [
             'name' => $name,
@@ -95,7 +100,8 @@ class Service extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)
@@ -104,12 +110,11 @@ class Service extends AbstractModule
     }
 
     /**
-     * assign application to a service
-     *
      * @param int $id
      * @param array $applicationsId
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function assignApplications(int $id, array $applicationsId)
@@ -120,11 +125,10 @@ class Service extends AbstractModule
     }
 
     /**
-     * get service's role|permissions
-     *
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function acl(int $id)

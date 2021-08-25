@@ -2,8 +2,6 @@
 
 namespace Rockads\Suite\Models;
 
-use Carbon\Carbon;
-
 /**
  * Class Token
  * @package Rockads\Suite\Models
@@ -26,9 +24,9 @@ class Token
     protected string $refreshToken;
 
     /**
-     * @var \DateTime
+     * @var string
      */
-    protected \DateTime $expiresIn;
+    protected string $expiresIn;
 
     /**
      * @var array
@@ -36,7 +34,11 @@ class Token
     protected array $user = [];
 
     /**
+     * Token constructor.
+     *
      * @param array $data
+     *
+     * @throws \Exception
      */
     public function __construct(array $data)
     {
@@ -130,13 +132,14 @@ class Token
 
     /**
      * @param int $expiresIn
+     *
+     * @throws \Exception
      */
     public function setExpiresIn(int $expiresIn): void
     {
-        $this->expiresIn = Carbon::now()
-            ->addSeconds($expiresIn)
-            // ->setTimezone()
-            ->toDateTime();
+        $date = new \DateTime();
+        $date->add(new \DateInterval('PT' . $expiresIn . 'S'));
+        $this->expiresIn = date('m-d-Y H:i:s',$date->getTimestamp());
     }
 
 

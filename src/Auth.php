@@ -2,12 +2,14 @@
 
 namespace Rockads\Suite;
 
-use Illuminate\Support\Facades\Http;
+use Rockads\Suite\Constants\ModulesType;
 use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\GrantTypes\GrantTypeFactory;
 use Rockads\Suite\GrantTypes\GrantTypeInterface;
 use Rockads\Suite\Constants\AuthTypes;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
+use Rockads\Suite\Traits\HttpRequest;
 
 /**
  * Class Auth
@@ -15,28 +17,15 @@ use Rockads\Suite\Models\Token;
  */
 class Auth
 {
-    /**
-     * @var string
-     */
-    protected $baseUrl;
+    use HttpRequest;
 
     /**
-     * @var string
+     * @var \Rockads\Suite\Models\Config
      */
-    protected $apiVersion;
+    protected Config $config;
 
     /**
-     * @var string
-     */
-    protected string $clientId;
-
-    /**
-     * @var string
-     */
-    protected string $clientSecret;
-
-    /**
-     * @var array
+     * @var \Rockads\Suite\Models\Token|null
      */
     protected ?Token $token = null;
 
@@ -56,6 +45,11 @@ class Auth
     protected GrantTypeInterface $grantHandler;
 
     /**
+     * @var string
+     */
+    protected string $moduleName = 'Auth';
+
+    /**
      * Auth constructor.
      *
      * @param string $authType
@@ -63,32 +57,51 @@ class Auth
      *
      * @throws \ReflectionException
      */
-    public function __construct(string $authType, array $configParams = [])
+    public function __construct(string $authType, array $configParams)
     {
-        // get config singleton
-        $config = Config::getInstance();
-
-        $this->baseUrl = $config->get('base_url');
-        $this->apiVersion = $config->get('api_version');
-        $this->clientId = $config->get('auth.client_id');
-        $this->clientSecret = $config->get('auth.client_secret');
+        // check config indexed
+        if (
+            empty($configParams['client_id']) ||
+            empty($configParams['client_secret']) ||
+            empty($configParams['base_url']) ||
+            empty($configParams['api_version'])
+        ) {
+            throw new \Exception('The given parameters for password grant should not be empty. (client_id | client_secret | base_url | api_version)');
+        }
+        $this->config = new Config();
+        $this->config->setBaseUrl($configParams['base_url']);
+        $this->config->setApiVersion($configParams['api_version']);
+        $this->config->setClientId($configParams['client_id']);
+        $this->config->setClientSecret($configParams['client_secret']);
+        if (isset($configParams['params']))
+            $this->config->setParams($configParams['params']);
         // check auth type
         if (!in_array($authType, AuthTypes::toArray())) {
             throw new \Exception('The given authentication grant type is invalid');
         }
         $this->grantType = $authType;
-        $this->grantHandler = GrantTypeFactory::create($authType, $configParams);
+        $this->grantHandler = GrantTypeFactory::create($authType, $this->config);
     }
 
     /**
-     * @return array|\Rockads\Suite\Models\Token
+     * @return \Rockads\Suite\Models\Token
      */
-    public function getToken()
+    public function getToken(): Token
     {
         if (!$this->token instanceof Token) {
             $this->token = $this->grantHandler->getTokens();
         }
         return $this->token;
+    }
+
+    /**
+     * used in HttpRequest trait
+     *
+     * @return string
+     */
+    protected function getAccessToken(): string
+    {
+        return $this->getToken()->getAccessToken();
     }
 
     /**
@@ -105,23 +118,17 @@ class Auth
     /**
      * @param string $accessToken
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function getUserByToken(string $accessToken)
     {
-        // get user by token
-        $route = sprintf('api/%s/auth/who-am-i', $this->apiVersion);
-        $url = path_join($this->baseUrl, $route);
-        $response = Http::acceptJson()
-            ->withToken($accessToken)
-            ->get($url);
-        if ($response->status() == 200) {
-            return $response->json();
-        } else {
-            $message = is_array($response->json()['message']) ? "Error in calling user by token" : $response->json()['message'];
-            throw new SuiteException($message, $response->json(), $response->status());
-        }
+        $route = sprintf('api/%s/auth/who-am-i', $this->config->getApiVersion());
+        $url = path_join($this->config->getBaseUrl(), $route);
+
+        return $this->withToken($accessToken)
+            ->get($url, $this->moduleName);
     }
 
     /**
@@ -136,7 +143,8 @@ class Auth
      * @param string|null $timezone
      * @param string|null $avatar
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function register(
@@ -152,38 +160,34 @@ class Auth
         string $avatar = null
     )
     {
-        $route = sprintf('api/%s/auth/register', $this->apiVersion);
-        $url = path_join($this->baseUrl, $route);
-        $response = Http::acceptJson()
-            ->post($url, [
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                // customer
-                'customer_name' => $customerName,
-                'customer_workspace' => $customerWorkspace,
-                'customer_services' => $customer_services,
-                // user of customer
-                'name' => $name,
-                'email' => $email,
-                'username' => $username,
-                'password' => $password,
-                'language' => $language,
-                'timezone' => $timezone,
-                'avatar' => $avatar,
-            ]);
-        
-        if ($response->status() == 201) {
-            return $response->json();
-        } else {
-            $message = is_array($response->json()['message']) ? "Error in calling register" : $response->json()['message'];
-            throw new SuiteException($message, $response->json(), $response->status());
-        }
+        $route = sprintf('api/%s/auth/register', $this->config->getApiVersion());
+        $url = path_join($this->config->getBaseUrl(), $route);
+
+        return $this->post($url, $this->moduleName, [
+            'client_id' => $this->config->getClientId(),
+            'client_secret' => $this->config->getClientSecret(),
+            // customer
+            'customer_name' => $customerName,
+            'customer_workspace' => $customerWorkspace,
+            'customer_services' => $customer_services,
+            // user of customer
+            'name' => $name,
+            'email' => $email,
+            'username' => $username,
+            'password' => $password,
+            'language' => $language,
+            'timezone' => $timezone,
+            'avatar' => $avatar,
+        ],
+            ['avatar' => $avatar]
+        );
     }
 
     /**
      * @param string|null $refreshToken
      *
-     * @return array|\Rockads\Suite\Models\Token|null
+     * @return \Rockads\Suite\Models\Token|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function refreshToken(string $refreshToken = null)
@@ -191,28 +195,24 @@ class Auth
         if (!$this->token instanceof Token)
             throw new \Exception('Token was not set, try to get token method');
         // get new token via refresh token
-        $route = sprintf('api/%s/auth/refresh-token', $this->apiVersion);
-        $url = path_join($this->baseUrl, $route);
-        $response = Http::acceptJson()
-            ->post($url, [
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                'refresh_token' => !is_null($refreshToken) ? $refreshToken : $this->token->getRefreshToken(),
-            ]);
+        $route = sprintf('api/%s/auth/refresh-token', $this->config->getApiVersion());
+        $url = path_join($this->config->getBaseUrl(), $route);
 
-        if ($response->ok()) {
-            $this->token->setAccessToken($response['data']['access_token']);;
-            $this->token->setRefreshToken($response['data']['refresh_token']);;
-            $this->token->setExpiresIn($response['data']['expires_in']);
-            return $this->token;
-        } else {
-            $message = is_array($response->json()['message']) ? "Error in calling refresh token" : $response->json()['message'];
-            throw new SuiteException($message, $response->json(), $response->status());
-        }
+        $response = $this->post($url, $this->moduleName, [
+            'client_id' => $this->config->getClientId(),
+            'client_secret' => $this->config->getClientSecret(),
+            'refresh_token' => !is_null($refreshToken) ? $refreshToken : $this->token->getRefreshToken(),
+        ]);
+        // update token object
+        $this->token->setAccessToken($response['data']['access_token']);;
+        $this->token->setRefreshToken($response['data']['refresh_token']);;
+        $this->token->setExpiresIn($response['data']['expires_in']);
+        return $this->token;
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function resendVerificationEmail()
@@ -220,22 +220,16 @@ class Auth
         if (!$this->token instanceof Token)
             throw new \Exception('Token was not set, try to get token method');
         // get new token via refresh token
-        $route = sprintf('api/%s/auth/email/verification-notification', $this->apiVersion);
-        $url = path_join($this->baseUrl, $route);
-        $response = Http::acceptJson()
-            ->withToken($this->token->getAccessToken())
-            ->post($url);
+        $route = sprintf('api/%s/auth/email/verification-notification', $this->config->getApiVersion());
+        $url = path_join($this->config->getBaseUrl(), $route);
 
-        if ($response->ok()) {
-            return $response->json();
-        } else {
-            $message = is_array($response->json()['message']) ? "Error in calling verification email" : $response->json()['message'];
-            throw new SuiteException($message, $response->json(), $response->status());
-        }
+        return $this->withToken($this->token->getAccessToken())
+            ->post($url, $this->moduleName);
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function logout()
@@ -244,18 +238,11 @@ class Auth
         if (!$this->token instanceof Token)
             throw new \Exception('Token was not set, try to get token method');
         // logout
-        $route = sprintf('api/%s/auth/logout', $this->apiVersion);
-        $url = path_join($this->baseUrl, $route);
-        $response = Http::acceptJson()
-            ->withToken($this->token->getAccessToken())
-            ->post($url);
+        $route = sprintf('api/%s/auth/logout', $this->config->getApiVersion());
+        $url = path_join($this->config->getBaseUrl(), $route);
 
-        if ($response->ok()) {
-            return $response->json();
-        } else {
-            $message = is_array($response->json()['message']) ? "Error in logout" : $response->json()['message'];
-            throw new SuiteException($message, $response->json(), $response->status());
-        }
+        return $this->withToken($this->token->getAccessToken())
+            ->post($url, $this->moduleName);
     }
 
 }

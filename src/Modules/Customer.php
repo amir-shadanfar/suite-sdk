@@ -3,6 +3,7 @@
 namespace Rockads\Suite\Modules;
 
 use Rockads\Suite\Constants\ModulesType;
+use Rockads\Suite\Models\Config;
 use Rockads\Suite\Models\Token;
 
 /**
@@ -26,15 +27,17 @@ class Customer extends AbstractModule
      * Customer constructor.
      *
      * @param \Rockads\Suite\Models\Token $token
+     * @param \Rockads\Suite\Models\Config $config
      */
-    public function __construct(Token $token)
+    public function __construct(Token $token, Config $config)
     {
         parent::__construct($token);
-        $this->url = path_join($this->baseUrl, sprintf('api/%s/customers', $this->apiVersion));
+        $this->url = path_join($config->getBaseUrl(), sprintf('api/%s/customers', $config->getApiVersion()));
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function all()
@@ -47,7 +50,8 @@ class Customer extends AbstractModule
      * @param string $workspace
      * @param array $services
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function create(string $name, string $workspace, array $services)
@@ -62,7 +66,8 @@ class Customer extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function show(int $id)
@@ -76,7 +81,8 @@ class Customer extends AbstractModule
      * @param string $workspace
      * @param array $services
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function update(int $id, string $name, string $workspace, array $services)
@@ -91,7 +97,8 @@ class Customer extends AbstractModule
     /**
      * @param int $id
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function destroy(int $id)
@@ -103,7 +110,8 @@ class Customer extends AbstractModule
      * @param int $id
      * @param array $services
      *
-     * @return array|mixed
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Rockads\Suite\Exceptions\SuiteException
      */
     public function syncServices(int $id, array $services)
