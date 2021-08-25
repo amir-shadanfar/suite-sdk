@@ -84,6 +84,14 @@ class Auth
     }
 
     /**
+     * @return \Rockads\Suite\Models\Config
+     */
+    public function getConfig(): Config
+    {
+        return $this->config;
+    }
+
+    /**
      * @return \Rockads\Suite\Models\Token
      */
     public function getToken(): Token
