@@ -66,7 +66,7 @@ class Auth
             empty($configParams['base_url']) ||
             empty($configParams['api_version'])
         ) {
-            throw new \Exception('The given parameters for password grant should not be empty. (client_id | client_secret | base_url | api_version)');
+            throw new \Exception('The given parameters for password grant should not be empty. (client_id | client_secret | base_url | api_version )');
         }
         $this->config = new Config();
         $this->config->setBaseUrl($configParams['base_url']);

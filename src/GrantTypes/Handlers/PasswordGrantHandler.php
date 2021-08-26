@@ -2,9 +2,7 @@
 
 namespace Rockads\Suite\GrantTypes\Handlers;
 
-use GuzzleHttp\Client;
 use Rockads\Suite\Models\Config;
-use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\GrantTypes\AbstractGrantType;
 use Rockads\Suite\Models\Token;
 
@@ -64,6 +62,6 @@ class PasswordGrantHandler extends AbstractGrantType
         ];
 
         $content = $this->post(path_join($this->config->getBaseUrl(), $this->url), $this->moduleName, $loginParams);
-        return new Token($content);
+        return new Token($content['data']['token'], $this->config);
     }
 }

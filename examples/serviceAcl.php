@@ -6,11 +6,16 @@ use Rockads\Suite\Exceptions\SuiteException;
 use Rockads\Suite\Suite;
 
 try {
-    $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::CLIENT_CREDENTIALS);
+    $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::CLIENT_CREDENTIALS,[
+        'base_url' => 'http://suite.rockads.mobylonia.com',
+        'api_version' => 'v1',
+        'client_id' => '1',
+        'client_secret' => 'qdFMCWXAGN4VFHqPJuMGMXTOmJwJpQo8IKRvcAzb',
+    ]);
     // token can be cached as mention in example/auth/token.php
     $token = $suiteAuth->getToken();
     // service crud
-    $suite = new Suite($token);
+    $suite = new Suite($token, $suiteAuth->getConfig());
     $result = $suite->serviceAcl()->all();
     /**
     $result = $suite->serviceAcl()->createOrUpdate([

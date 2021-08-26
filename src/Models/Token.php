@@ -24,9 +24,9 @@ class Token
     protected string $refreshToken;
 
     /**
-     * @var string
+     * @var int
      */
-    protected string $expiresIn;
+    protected int $expiresIn;
 
     /**
      * @var array
@@ -34,24 +34,35 @@ class Token
     protected array $user = [];
 
     /**
+     * @var \Rockads\Suite\Models\Config
+     */
+    protected Config $config;
+
+    /**
      * Token constructor.
      *
      * @param array $data
+     * @param \Rockads\Suite\Models\Config $config
      *
      * @throws \Exception
      */
-    public function __construct(array $data)
+    public function __construct(array $data, Config $config)
     {
+        $this->config = $config;
+        // validation token data
         if ($this->valid($data)) {
-            $this->setTokenType($data['data']['token']['token_type']);
-            $this->setAccessToken($data['data']['token']['access_token']);
-            $this->setExpiresIn($data['data']['token']['expires_in']);
+            $this->setTokenType($data['token_type']);
+            $this->setAccessToken($data['access_token']);
+            $this->setExpiresIn($data['expires_in']);
             // client_credential: refreshToken not set
-            if (isset($data['data']['token']['refresh_token'])) {
-                $this->setRefreshToken($data['data']['token']['refresh_token']);
+            if (isset($data['refresh_token'])) {
+                $this->setRefreshToken($data['refresh_token']);
+                unset($data['refresh_token']);
             }
             // in m2m grant type user is null
-            unset($data['data']['token']);
+            unset($data['token_type']);
+            unset($data['access_token']);
+            unset($data['expires_in']);
             $this->setUser($data['data']);
         }
     }
@@ -61,17 +72,20 @@ class Token
      *
      * @return false
      */
-    private function valid(array $data = [])
+    private function valid(array $tokenInfo = [])
     {
-        $tokenInfo = (array)$data['data']['token'];
-
-        if (count($tokenInfo) < 1)
-            return false;
-
-        if (!isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['expires_in']))
+        if (count($tokenInfo) < 1 || !isset($tokenInfo['token_type']) || !isset($tokenInfo['access_token']) || !isset($tokenInfo['expires_in']))
             return false;
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return get_object_vars($this);
     }
 
     /**
@@ -123,7 +137,7 @@ class Token
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getExpiresIn()
     {
@@ -137,9 +151,7 @@ class Token
      */
     public function setExpiresIn(int $expiresIn): void
     {
-        $date = new \DateTime();
-        $date->add(new \DateInterval('PT' . $expiresIn . 'S'));
-        $this->expiresIn = date('m-d-Y H:i:s',$date->getTimestamp());
+        $this->expiresIn = time() + $expiresIn;
     }
 
 
