@@ -14,18 +14,24 @@ try {
     
     // 1.user-based auth---------------------
     $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::PASSWORD_GRANT, [
-        'username' => 'admin@example.com',
-        'password' => '123',
-        'workspace' => 'teknasyon',
+        'base_url' => 'http://suite.rockads.mobylonia.com',
+        'api_version' => 'v1',
+        'client_id' => '1',
+        'client_secret' => 'qdFMCWXAGN4VFHqPJuMGMXTOmJwJpQo8IKRvcAzb',
+        // params
+        'params' => [
+            'username' => 'user@example.com',
+            'password' => '123!@#asd',
+            'workspace' => 'workspace_one',
+            // ...
+        ]
     ]);
     // 2.machine-based(m2m) auth-------------
     // $suiteAuth = new \Rockads\Suite\Auth(AuthTypes::CLIENT_CREDENTIALS);
     
     $token = $suiteAuth->getToken();
     // cache token for feature uses
-    $now = new \DateTime('now');
-    $date = $token->getExpiresIn();
-    $cachePeriod = $date->getTimestamp() - $now->getTimestamp();
+    $cachePeriod = $token->getExpiresIn() - strtotime('now');
     Cache::put(
         TOKEN_KEY,
         $token,
