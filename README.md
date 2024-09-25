@@ -11,7 +11,7 @@ This is where your description should go. Take a look at [contributing.md](contr
 Via Composer
 
 ``` bash
-$ composer require rockads/suite
+$ composer require amir-shadanfar/suite
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-If you discover any security related issues, please email amirshadanfar@teknasyon.com instead of using the issue tracker.
+If you discover any security related issues, please email a.shadanfar.it@gmail.com instead of using the issue tracker.
 
 ## Credits
 
